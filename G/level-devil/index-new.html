@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Level Devil - Fun HTML5 Game | TDAgames</title>
+<meta name="description" content="Play Level Devil, a fun HTML5 game by TDAgames. Enjoy exciting levels and challenge your skills directly in your browser.">
+<meta name="keywords" content="Level Devil, HTML5 game, browser game, TDAgames, online games, free games">
+<meta name="author" content="TDAgames">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.ico">  
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://blinkgames007.github.io/style.css" />
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #43206f, #1c0936);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #fff;
+  }
+
+  header, footer {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px 50px;
+    box-sizing: border-box;
+  }
+
+  /* --- Game Header Section --- */
+  .game-header {
+    background-color: #1b0b3b;
+    border-radius: 20px;
+    padding: 25px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    margin-bottom: 30px;
+    margin-top: 100px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .game-header:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+  }
+
+  .game-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .game-icon {
+    width: 110px;
+    height: 110px;
+    border-radius: 18px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .game-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .game-text h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    margin: 0;
+    color: #fff;
+  }
+
+  .developer {
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 8px;
+  }
+
+  .stats {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #bbb;
+  }
+
+  .play-btn {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .play-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,75,43,0.6);
+  }
+
+  /* --- Ad Banner --- */
+  #banner1, #banner2 {
+    width: 100%;
+    max-width: 468px;
+    min-height: 90px;
+    margin: 30px auto;
+    text-align: center;
+  }
+
+  /* --- Banner Image --- */
+  .banner {
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 20px 0 40px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  }
+
+  .banner img {
+    width: 100%;
+    display: block;
+  }
+
+  /* --- Screenshots --- */
+  .screenshots {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 12px 0 5px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+  }
+
+  .screenshots::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .screenshots::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+  }
+
+  .screenshots img {
+    height: 200px;          /* fixed height so landscape & portrait align nicely */
+    width: auto;            /* auto width keeps aspect ratio */
+    border-radius: 15px;
+    flex-shrink: 0;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .screenshots img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+  /* --- Description --- */
+  .description {
+    margin-top: 30px;
+    line-height: 1.6;
+    font-size: 16px;
+    color: #ddd;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  }
+
+  .description h2 {
+    margin-top: 0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #fff;
+  }
+
+  /* --- Mobile Fixes --- */
+  @media (max-width: 768px) {
+    main {
+      padding: 20px;
+    }
+
+    .game-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .game-info {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-icon {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 10px;
+    }
+
+    .game-text h1 {
+      font-size: 18px;
+    }
+
+    .play-btn {
+      width: 100%;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .screenshots img {
+      width: 150px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Game Header -->
+    <div class="game-header">
+      <div class="game-info">
+        <div class="game-icon">
+          <img src="favicon.ico" alt="Level Devil Icon">
+        </div>
+        <div class="game-text">
+          <h1>Level Devil</h1>
+          <div class="developer">TDAgames</div>
+          <div class="stats">
+            <div>⭐ 4.2</div>
+            <div>Rated for 3+</div>
+          </div>
+        </div>
+      </div>
+      <a href="page.html" class="play-btn">▶ Play Now</a>
+    </div>
+
+    <!-- Top Banner -->
+    <div id="banner1"></div>
+
+    <!-- Banner Image -->
+    <div class="banner">
+      <img src="sl/img_leveldevil.jpg" alt="Level Devil Banner">
+    </div>
+
+    <!-- Screenshots -->
+    <div class="screenshots">
+      <img src="sl/snap1.png" alt="Screenshot 1">
+      <img src="sl/snap2.jpg" alt="Screenshot 2">
+      <img src="sl/snap3.jpg" alt="Screenshot 3">
+      <img src="sl/snap4.jpg" alt="Screenshot 4">
+      <img src="sl/snap5.png" alt="Screenshot 5">
+    </div>
+
+    <!-- Description -->
+    <div class="description">
+      <h2>About this game</h2>
+      <p>
+        Level Devil is a tricky platformer where every jump counts! Each level is designed to surprise, test, and frustrate your instincts — only the most patient players will survive!
+      </p>
+      <p>
+        Can you reach the end without losing your cool? Play right in your browser — no downloads needed.
+      </p>
+    </div>
+
+    <!-- Bottom Banner -->
+    <div id="banner2"></div>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="https://blinkgames007.github.io/layout.js"></script>
+  <script src="https://blinkgames007.github.io/config.js"></script>
+  <script src="https://blinkgames007.github.io/GoogleAdsManager.js"></script>
+  <script>
+    window.onload = () => {
+      const ads = new GoogleAdsManager("ca-pub-9301267932926503");
+      ads.loadAutoAds();
+      ads.loadAdUnit("banner1", "3089669868", "auto");
+      ads.loadAdUnit("banner2", "3089669868", "auto");
+    };
+  </script>
+
+</body>
+</html>
