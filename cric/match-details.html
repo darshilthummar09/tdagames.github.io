@@ -1,0 +1,196 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Match Details</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="details-container" style="padding: 10px;"></div>
+
+<script>
+    // Get match data from URL query string
+    const params = new URLSearchParams(window.location.search);
+    const matchData = params.get("data");
+    const match = matchData ? JSON.parse(decodeURIComponent(matchData)) : null;
+
+    const container = document.getElementById("details-container");
+
+    if (match) {
+        const homeScores = match.Innings?.filter(i => i.BattingTeamId === match.HomeTeam?.Id).map(i => i.RunsScored + "-" + i.NumberOfWicketsFallen).join(" & ") ?? "";
+        const awayScores = match.Innings?.filter(i => i.BattingTeamId === match.AwayTeam?.Id).map(i => i.RunsScored + "-" + i.NumberOfWicketsFallen).join(" & ") ?? "";
+
+        container.innerHTML = `
+            <h2>${match.HomeTeam?.ShortName ?? ""} vs ${match.AwayTeam?.ShortName ?? ""}</h2>
+            <p><strong>Series:</strong> ${match.Competition?.Name ?? ""}</p>
+            <p><strong>Venue:</strong> ${match.Venue?.Name ?? ""}</p>
+            <p><strong>Game Type:</strong> ${match.GameType ?? ""}</p>
+            <p><strong>Result:</strong> ${match.ResultText ?? ""}</p>
+            <h3>Scores:</h3>
+            <p>${match.HomeTeam?.ShortName ?? ""}: ${homeScores}</p>
+            <p>${match.AwayTeam?.ShortName ?? ""}: ${awayScores}</p>
+        `;
+    } else {
+        container.innerHTML = "<p>No match data found.</p>";
+    }
+</script>
+</body>
+</html>
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Match Details</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #fafafa;
+    }
+
+    /* TABS */
+    .tabs {
+        display: flex;
+        background: #ffffff;
+        border-bottom: 1px solid #ccc;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .tab-button {
+        flex: 1;
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+        border: none;
+        background: #eaeaea;
+        font-size: 16px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .tab-button:hover {
+        background: #ddd;
+    }
+
+    .tab-button.active {
+        background: #ffffff;
+        border-bottom: 3px solid #007bff;
+        color: #007bff;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 15px;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .score-card {
+        padding: 10px;
+        background: #fff;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+</head>
+
+<body>
+
+<div class="tabs">
+    <button class="tab-button active" data-tab="live">LIVE</button>
+    <button class="tab-button" data-tab="info">INFO</button>
+    <button class="tab-button" data-tab="scorecard">SCORECARD</button>
+    <button class="tab-button" data-tab="highlights">HIGHLIGHTS</button>
+</div>
+
+<div id="live" class="tab-content active">
+    <h2>Live Match</h2>
+    <p>Live commentary or widgets can appear here.</p>
+</div>
+
+<div id="info" class="tab-content">
+    <h2 id="info-title"></h2>
+    <div id="details-container"></div>
+</div>
+
+<div id="scorecard" class="tab-content">
+    <h2>Scorecard</h2>
+    <p>Batsmen & Bowlers details come here.</p>
+</div>
+
+<div id="highlights" class="tab-content">
+    <h2>Highlights</h2>
+    <p>Match highlights videos or clips appear here.</p>
+</div>
+
+
+<script>
+/* ------- TABS -------- */
+const tabButtons = document.querySelectorAll(".tab-button");
+const contents = document.querySelectorAll(".tab-content");
+
+tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelector(".tab-button.active").classList.remove("active");
+        btn.classList.add("active");
+
+        contents.forEach(c => c.classList.remove("active"));
+        document.getElementById(btn.dataset.tab).classList.add("active");
+    });
+});
+
+/* ------- READ URL PARAMS FROM ANDROID -------- */
+const params = new URLSearchParams(window.location.search);
+
+const titleText = params.get("title");
+const matchData = params.get("data");
+
+const match = matchData ? JSON.parse(decodeURIComponent(matchData)) : null;
+const container = document.getElementById("details-container");
+
+/* ------- SET REAL BROWSER TITLE ------- */
+if (titleText) {
+    document.title = decodeURIComponent(titleText);
+    document.getElementById("info-title").innerText = decodeURIComponent(titleText);
+}
+
+/* ------- RENDER MATCH DETAILS ------- */
+if (match) {
+    const homeScores = match.Innings?.filter(i => i.BattingTeamId === match.HomeTeam?.Id)
+        .map(i => i.RunsScored + "-" + i.NumberOfWicketsFallen)
+        .join(" & ") ?? "";
+
+    const awayScores = match.Innings?.filter(i => i.BattingTeamId === match.AwayTeam?.Id)
+        .map(i => i.RunsScored + "-" + i.NumberOfWicketsFallen)
+        .join(" & ") ?? "";
+
+    container.innerHTML = `
+        <div class="score-card">
+            <h3>${match.HomeTeam?.ShortName ?? ""} vs ${match.AwayTeam?.ShortName ?? ""}</h3>
+            <p><strong>Series:</strong> ${match.Competition?.Name ?? ""}</p>
+            <p><strong>Venue:</strong> ${match.Venue?.Name ?? ""}</p>
+            <p><strong>Game Type:</strong> ${match.GameType ?? ""}</p>
+            <p><strong>Result:</strong> ${match.ResultText ?? ""}</p>
+
+            <h3>Scores:</h3>
+            <p>${match.HomeTeam?.ShortName ?? ""}: ${homeScores}</p>
+            <p>${match.AwayTeam?.ShortName ?? ""}: ${awayScores}</p>
+        </div>
+    `;
+} else {
+    container.innerHTML = "<p>No match data found.</p>";
+}
+</script>
+
+</body>
+</html>

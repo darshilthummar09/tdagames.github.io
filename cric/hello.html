@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Cricket TV & Score | Fast Live Cricket Live Line, Ball-by-Ball Score, IPL, PSL | Microbuzz Tech</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.ico">
+
+  <!-- Google GPT Ads -->
+  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+  <script>
+    window.googletag = window.googletag || {cmd: []};
+    googletag.cmd.push(function() {
+
+      // Define ad slot
+      googletag.defineSlot('/23319699370/abc', [300, 250], 'div-gpt-ad-1763980012515-0')
+               .addService(googletag.pubads());
+
+      googletag.pubads().enableSingleRequest();
+      googletag.pubads().collapseEmptyDivs();
+      googletag.enableServices();
+    });
+  </script>
+
+  <!-- SEO Meta Description -->
+  <meta name="description"
+    content="Live Cricket TV & Score by Microbuzz Tech offers Cricshow-style fast live cricket scores, ball-by-ball updates, Hindi & English commentary, IPL, PSL, CPL, BPL, T20 World Cup, match schedules, odds history, fixtures, ranking, and complete live cricket coverage.">
+
+  <!-- SEO Keywords -->
+  <meta name="keywords"
+    content="Live Cricket TV, Live Cricket Score, Cricket Live Line, Cricshow, Ball by Ball Score, Live Cricket Commentary, Hindi Commentary, English Commentary, IPL Live Score, PSL Live Score, BPL, CPL, T20 World Cup, ODI World Cup, ICC Test Championship, Cricket Odds, Cricket Sessions, Live Scorecard, Microbuzz Tech">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://cricketscorelive.github.io/">
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Microbuzz Tech",
+    "url": "https://cricketscorelive.github.io/",
+    "logo": "https://cricketscorelive.github.io/logo.png",
+    "description": "Live Cricket TV & Score developed by Microbuzz Tech provides Cricshow-style fast live line, cricket score updates, ball-by-ball commentary, match schedules, odds with history, sessions, fixtures, IPL, PSL, CPL, BPL, T20 World Cup and more.",
+    "sameAs": []
+  }
+  </script>
+
+  <!-- Styles -->
+  <style>
+    body {
+      margin: 0;
+      background: #f1fff3;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+      background: url('https://img.freepik.com/free-photo/top-view-cricket-bat-ball-grass_123827-23161.jpg') center/cover no-repeat;
+      color: white;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: 38px;
+      font-weight: 700;
+    }
+
+    .hero-text {
+      margin-top: 10px;
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    .section {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+      color: #0e5322;
+    }
+
+    .box {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 12px;
+      border: 2px solid #7ee39f;
+      box-shadow: 0px 4px 18px rgba(0,0,0,0.1);
+    }
+
+    /* Tab bar */
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 2px solid #7ee39f;
+      cursor: pointer;
+      font-weight: 600;
+      color: #0e5322;
+    }
+    .tab.active {
+      background: #7ee39f;
+      color: #fff;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+  </style>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div id="header"></div>
+
+  <!-- Google Ad Container (300x250) -->
+  <div id="div-gpt-ad-1763980012515-0" style="width:300px; height:250px; margin:20px auto;">
+    <script>
+      googletag.cmd.push(function() {
+        googletag.display('div-gpt-ad-1763980012515-0');
+      });
+    </script>
+  </div>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Live Cricket TV & Score</h1>
+      <p class="hero-text">Watch Live Matches • Get Instant Scores • Stay Updated Anytime</p>
+    </div>
+  </section>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <div class="tab active" data-target="live">Live</div>
+    <div class="tab" data-target="upcoming">Upcoming</div>
+    <div class="tab" data-target="recent">Recent</div>
+  </div>
+
+  <!-- TAB SECTIONS -->
+  <div id="live" class="section active"></div>
+  <div id="upcoming" class="section"></div>
+  <div id="recent" class="section"></div>
+
+  <div id="footer"></div>
+
+  <script src="matches.js"></script>
+  <script>
+    async function load(file, element) {
+      const html = await fetch(file).then(res => res.text());
+      document.getElementById(element).innerHTML = html;
+    }
+
+    load("header.html", "header");
+    load("footer.html", "footer");
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.target).classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

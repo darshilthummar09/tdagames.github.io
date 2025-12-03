@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TDAgames</title>
+  
+  <!-- ✅ SEO Meta -->
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <link rel="manifest" href="blinkgames.webmanifest">
+    <link rel="icon" href="assets/images/app-icon-16.png" type="image/png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/images/app-icon-57.png">
+
+  <!-- Fonts + CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header>
+    <div class="brand">
+      <div class="company-logo"></div>
+      <h1 class="company-name"></h1>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="gameSearch" placeholder="Search games..." />
+    </div>
+    <button class="search-toggle" onclick="toggleSearch()">🔍</button>
+  </header>
+  
+  <!-- ================= HERO ================= -->
+  <section class="hero home-bg">
+    <div class="hero-content">
+      <h2>Welcome to <span class="company-name"></span></h2>
+      <p class="hero-desc">Play, explore, and enjoy awesome games!</p>
+    </div>
+  </section>
+
+<!-- =================== ADS =================== -->
+ <div id="banner1"></div>
+  
+  <!-- ================= GAMES ================= -->
+  <main>
+    <!-- ================= RECENTLY PLAYED ================= -->
+    <section id="recently-played" style="display:none;">
+      <h2 class="section-title">🕹️ Recently Played</h2>
+      <div class="games-container" id="recent-container"></div>
+    </section>
+
+    <!-- ================= RECENTLY PLAYED ================= -->
+    <section id="games">
+      <h2 class="section-title">🔥 Play Online Games</h2>
+      <div class="games-container"></div>
+    </section>
+  </main>
+
+<!-- ================= ADS ================= -->
+<div id="banner2"></div>
+  
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <!-- Left -->
+      <div class="footer-left">
+        <div class="brand">
+          <div class="company-logo"></div>
+          <h2 class="company-name"></h2>
+        </div>
+        <p class="dev-company">Developed by <span class="company-owner"></p>
+        <div class="footer-socials" id="footer-socials"></div>
+      </div>
+
+      <!-- Right -->
+      <div class="footer-right">
+        <div class="footer-column">
+          <h4>Get To Know Us</h4>
+          <a href="about.html">About</a>
+          <!-- <a href="#"><span class="company-name"></span> for Developers</a> -->
+        </div>
+        <div class="footer-column">
+          <h4>Privacy and Terms</h4>
+          <a href="privacypolicy.html">Privacy Center</a>
+        </div>
+        <div class="footer-column">
+          <h4>Help and Support</h4>
+          <!-- <a href="/faq.html">FAQ</a> -->
+          <a href="contact.html">Contact US</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-bottom">
+      &copy; <span id="year"></span> <span class="website-name"></span>. All rights reserved. <br>
+      Powered by <strong><span class="company-owner"></strong>
+    </p>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="config.js"></script>
+  <script src="GoogleAdsManager.js"></script>
+  <script>
+     const ads = new GoogleAdsManager("ca-pub-9301267932926503");
+     ads.loadAutoAds();
+    ads.loadAdUnit("banner1", "3089669868", "auto");
+  ads.loadAdUnit("banner2", "3089669868", "auto");
+  </script>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

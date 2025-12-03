@@ -1,0 +1,111 @@
+<footer class="lc-footer">
+
+  <div class="footer-wrapper">
+
+    <!-- Left: Logo + Brand -->
+    <div class="footer-brand">
+      <img src="logo.png" class="footer-logo">
+      <div>
+        <h2 class="footer-title">Live Cricket TV & Score</h2>
+        <p class="footer-dev">Developed by <strong>Microbuzz Tech</strong></p>
+      </div>
+    </div>
+
+    <!-- Right: Privacy -->
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Home</a>
+      <a href="privacy.html" class="footer-link">Privacy Policy</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Live Cricket TV & Score. All Rights Reserved.
+    <br>
+    <span class="powered">Powered by <strong>Microbuzz Tech</strong></span>
+  </div>
+
+</footer>
+
+<style>
+  .lc-footer {
+    background: linear-gradient(135deg, #0d6828, #0a8f34);
+    padding: 25px 20px;
+    font-family: "Poppins", sans-serif;
+    color: #ecffe7;
+    box-shadow: 0px -4px 12px rgba(0,0,0,0.25);
+  }
+
+  .footer-wrapper {
+    max-width: 1150px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    height: 50px; /* Bigger logo */
+    border-radius: 6px;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
+  }
+
+  .footer-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    color: #d6ffd1;
+  }
+
+  .footer-dev {
+    margin: 0;
+    font-size: 14px;
+    color: #c9ffc4;
+  }
+
+  .footer-links .footer-link {
+    color: #e0ffe0;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+  }
+
+  .footer-links .footer-link:hover {
+    border-bottom: 1px solid #ffffff;
+  }
+
+  .footer-bottom {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 14px;
+    color: #dbffda;
+    opacity: 0.95;
+  }
+
+  .powered {
+    color: #b9ffb2;
+    font-weight: 500;
+  }
+
+  /* Mobile Design */
+  @media(max-width: 600px) {
+    .footer-wrapper {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer-logo {
+      height: 42px;
+    }
+  }
+</style>

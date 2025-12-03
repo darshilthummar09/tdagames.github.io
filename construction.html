@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Under Construction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00ffcc;
+      --accent: #ff007f;
+      --bg-dark: #0d0d0d;
+      --bg-card: #171717;
+      --text-light: #f5f5f5;
+      --header-h: 72px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      padding-top: var(--header-h);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: #111;
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      z-index: 1000;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-img {
+      height: 40px;
+      width: auto;
+    }
+    header h1 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    /* Under Construction */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    h2 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px var(--primary);
+      animation: flicker 2s infinite alternate;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .building {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .block {
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      animation: build 1.5s infinite;
+    }
+    .block:nth-child(1) { animation-delay: 0s; }
+    .block:nth-child(2) { animation-delay: 0.2s; }
+    .block:nth-child(3) { animation-delay: 0.4s; }
+    .block:nth-child(4) { animation-delay: 0.6s; }
+    .block:nth-child(5) { animation-delay: 0.8s; }
+
+    @keyframes build {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(-15px); opacity: 1; }
+    }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+      20%, 24%, 55% { opacity: 0; }
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      border-top: 2px solid var(--primary);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <span class="company-logo"></span>
+      <h1 class="company-name"></h1>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h2>🚧 Page Under Construction 🚧</h2>
+    <p>We’re upgrading the arena. Stay tuned, gamer!</p>
+    <div class="building">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    &copy; <span id="year"></span> <span class="company-name"></span>. All rights reserved.
+  </footer>
+
+  <script>
+    const apiUrl = "https://api.npoint.io/16a412765c672792b436";
+    let companyInfo = {};
+
+    async function loadCompanyInfo() {
+      try {
+        const res = await fetch(apiUrl);
+        companyInfo = await res.json();
+
+        document.title = companyInfo.title || companyInfo.name;
+        document.querySelectorAll(".company-name").forEach(el => el.textContent = companyInfo.name);
+
+        // Logo
+        document.querySelectorAll(".company-logo").forEach(c => {
+          c.innerHTML = `<img src="${companyInfo.logo}" alt="logo" class="logo-img">`;
+        });
+
+        // Favicon
+        if (companyInfo.favicon) {
+          const fav = document.createElement("link");
+          fav.rel = "icon"; fav.href = companyInfo.favicon; fav.type = "image/png";
+          document.head.appendChild(fav);
+        }
+      } catch (err) { console.error(err); }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("year").textContent = new Date().getFullYear();
+      loadCompanyInfo();
+    });
+  </script>
+</body>
+</html>

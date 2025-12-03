@@ -1,0 +1,153 @@
+body {
+background: #f1f1f1;
+margin: 0;
+padding: 10px;
+font-family: Arial, sans-serif;
+}
+
+/* === CardView === */
+.match-card {
+background: #ffffff;
+border-radius: 15px;
+margin: 5px 0;
+padding: 0;
+box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+overflow: hidden;
+}
+
+/* === Top Bar (Series + Arrow) === */
+.card-header {
+height: 45px;
+background: #eaf5f1;
+display: flex;
+align-items: center;
+padding: 0 10px;
+}
+
+.series-name {
+flex: 1;
+text-align: center;
+color: black;
+font-size: 16px;
+font-weight: 500;
+}
+
+.arrow-icon {
+width: 35px;
+height: 35px;
+}
+
+/* === Venue pills === */
+.venue-row {
+margin: 7px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.venue-pill {
+border: 2px solid #2ecc71;
+padding: 5px 10px;
+color: #2ecc71;
+border-radius: 20px;
+height: 30px;
+display: flex;
+align-items: center;
+font-weight: bold;
+}
+
+/* === Team Row Sections === */
+.team-row {
+display: flex;
+padding: 5px 15px;
+}
+
+.left-block, .right-block {
+width: 50%;
+display: flex;
+align-items: center;
+}
+
+.flag {
+width: 20px;
+height: 20px;
+}
+
+.team-name {
+padding: 5px 15px;
+font-size: 15px;
+}
+
+.team-score {
+padding: 5px 5px;
+font-size: 15px;
+font-weight: bold;
+display: flex;
+align-items: center;
+}
+
+/* === Match Result === */
+.match-result {
+height: 40px;
+text-align: center;
+color: red;
+font-size: 16px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* === TABLAYOUT === */
+.tab-bar {
+display: flex;
+background: white;
+border-bottom: 2px solid #e0e0e0;
+margin-bottom: 10px;
+}
+
+.tab {
+flex: 1;
+text-align: center;
+padding: 12px 0;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+color: #007bff;
+border-bottom: 3px solid #007bff;
+}
+
+/* === Sections === */
+.section {
+display: none; /* hide all sections by default */
+gap: 12px;
+grid-template-columns: 1fr; /* default single column for small screens */
+}
+
+.section.active {
+display: grid; /* active section uses grid layout */
+}
+
+/* Medium screens = 2 columns */
+@media (min-width: 700px) {
+.section.active {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+
+/* Large screens = 3 columns */
+@media (min-width: 1100px) {
+.section.active {
+grid-template-columns: repeat(3, 1fr);
+}
+}
+
+/* Extra large screens = 4 columns */
+@media (min-width: 1500px) {
+.section.active {
+grid-template-columns: repeat(4, 1fr);
+}
+}

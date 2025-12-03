@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Live Cricket TV & Score</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: #f4fff4;
+      font-family: "Poppins", sans-serif;
+      color: #0e3d1e;
+    }
+
+    .policy-wrapper {
+      max-width: 950px;
+      margin: 40px auto;
+      padding: 28px;
+      background: #ffffff;
+      border-radius: 14px;
+      border-left: 6px solid #0a8f34;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #0a8f34;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #0c5e29;
+      margin-top: 25px;
+      margin-bottom: 6px;
+    }
+
+    p, li {
+      font-size: 15px;
+      color: #2f4d36;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      padding-left: 22px;
+    }
+
+    a {
+      color: #0a8f34;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media(max-width: 600px){
+      .policy-wrapper {
+        margin: 15px;
+        padding: 18px;
+      }
+
+      h1 { font-size: 24px; }
+      h2 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (loaded dynamically) -->
+  <div id="header"></div>
+
+  <!-- ORIGINAL CONTENT STARTS HERE -->
+  <div class="policy-wrapper">
+
+    <h1>Privacy Policy - Live Cricket TV & Score</h1>
+    <p><strong>Effective Date:</strong> November 20, 2025</p>
+
+    <p><strong>Drydev</strong> (“we”, “us”, or “our”) created the <strong>Live Cricket TV & Score</strong> app as a free service. This Privacy Policy explains what information is collected and how it is used and protected.</p>
+
+    <h2>1. Information Collection</h2>
+    <p>We do not collect personal data directly. However, we integrate third-party services that may collect anonymous, non-personal data to improve the app’s performance, serve ads, or send notifications.</p>
+
+    <h2>2. Third-Party Services</h2>
+    <p>The app uses the following services:</p>
+    <ul>
+      <li><strong>AdMob (Google):</strong> For showing ads. May collect device ID, IP, app usage. (<a href="https://policies.google.com/technologies/ads" target="_blank">Google Ad Policy</a>)</li>
+      <li><strong>Firebase (Google):</strong>
+        <ul>
+          <li>Analytics – Tracks anonymized usage data</li>
+          <li>Crashlytics – Captures crash reports</li>
+          <li>Remote Config – Allows content updates</li>
+        </ul>
+        (<a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy</a>)
+      </li>
+      <li><strong>OneSignal:</strong> For push notifications. Collects device info, language, and engagement. (<a href="https://onesignal.com/privacy_policy" target="_blank">OneSignal Privacy Policy</a>)</li>
+      <li><strong>Facebook Audience Network:</strong> Serves ads and tracks engagement. (<a href="https://www.facebook.com/privacy/policy/" target="_blank">Facebook Privacy</a>)</li>
+      <li><strong>Qureka:</strong> May display game content or ads under its own privacy terms.</li>
+    </ul>
+
+    <h2>3. Permissions Used</h2>
+    <ul>
+      <li><code>INTERNET</code> – To load ads, content, and sync data</li>
+      <li><code>ACCESS_NETWORK_STATE</code> – To detect if the device is online</li>
+      <li><code>POST_NOTIFICATIONS</code> – For sending alerts and offers</li>
+      <li><code>com.google.android.gms.permission.AD_ID</code> – To access the advertising ID for ad personalization</li>
+    </ul>
+
+    <h2>4. Data Sharing</h2>
+    <p>We do not sell or directly share your personal information. Third-party SDKs may process anonymized data under their own privacy policies.</p>
+
+    <h2>5. Children’s Privacy</h2>
+    <p>This app is not intended for users under 13. We do not knowingly collect data from children. If we discover a child’s data has been collected, we will promptly delete it.</p>
+
+    <h2>6. Data Security</h2>
+    <p>We use reasonable technical measures to secure your data. However, no internet method is completely secure.</p>
+
+    <h2>7. Changes to Policy</h2>
+    <p>We may update this Privacy Policy. Changes will be posted here. Continued use of the app after updates means you accept the new terms.</p>
+
+    <h2>8. Contact Us</h2>
+    <p>For any questions or concerns, contact us at:</p>
+    <p><strong>Email:</strong> <a href="mailto:livecrickettvscore@gmail.com">livecrickettvscore@gmail.com</a></p>
+    <p><strong>Website:</strong> <a href="https://cricketscorelive.github.io/" target="_blank">https://cricketscorelive.github.io</a></p>
+
+    <p>Thank you for trusting <strong>Live Cricket TV & Score</strong>.</p>
+
+  </div>
+  <!-- ORIGINAL CONTENT ENDS HERE -->
+
+  <!-- FOOTER (loaded dynamically) -->
+  <div id="footer"></div>
+
+  <script>
+    async function load(file, place) {
+      const html = await fetch(file).then(res => res.text());
+      document.getElementById(place).innerHTML = html;
+    }
+
+    load("header.html", "header");
+    load("footer.html", "footer");
+  </script>
+
+</body>
+</html>
