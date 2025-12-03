@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Polyomino Blocks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Styles -->
+  <link rel="icon" href="img/icons/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="thirdparty/jquery.mobile-1.4.5/jquery.mobile-1.4.5.css" />
+  <link rel="stylesheet" href="css/index.css" />
+
+  <!-- Scripts -->
+  <script src="thirdparty/jquery-2.2.4.js"></script>
+  <script src="thirdparty/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script>
+  <script>
+    // Touch → Mouse polyfill, scoped only to #board
+    (function() {
+      function touchHandler(event) {
+        var touches = event.changedTouches,
+            first = touches[0],
+            type = "";
+        switch(event.type) {
+          case "touchstart": type = "mousedown"; break;
+          case "touchmove":  type = "mousemove"; break;        
+          case "touchend":   type = "mouseup"; break;
+          default: return;
+        }
+
+        var simulatedEvent = new MouseEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          screenX: first.screenX,
+          screenY: first.screenY,
+          clientX: first.clientX,
+          clientY: first.clientY,
+          button: 0
+        });
+        first.target.dispatchEvent(simulatedEvent);
+
+        // ⚠️ Only prevent default if inside the game board
+        if (event.target.closest("#board")) {
+          event.preventDefault();
+        }
+      }
+
+      const board = document.getElementById("board");
+      if (board) {
+        board.addEventListener("touchstart", touchHandler, true);
+        board.addEventListener("touchmove", touchHandler, true);
+        board.addEventListener("touchend", touchHandler, true);
+        board.addEventListener("touchcancel", touchHandler, true);
+      }
+    })();
+  </script>
+
+  <script src="thirdparty/raphael-2.2.0/raphael.js"></script>
+  <script src="js/hmi.js" defer></script>
+</head>
+<body>
+
+<!-- Game Page -->
+<div data-role="page" data-theme="b" id="game-page" class="mybackground">
+  <div data-role="header" data-position="fixed">
+    <h3 id="myheader">Polyomino Blocks</h3>
+    <div style="text-align:center; margin-top:5px;">
+      <a id="homeBtn" data-role="button" data-inline="true" data-mini="true" onclick="openWebOldLogic(() => { window.location.href='../../index.html'; });">Home</a>
+      <a id="restart" data-role="button" data-inline="true" data-mini="true">Restart</a>
+      <!-- <a href="#rules-page" data-role="button" data-inline="true" data-mini="true" data-transition="pop">Rules</a> -->
+      <a id="rulesBtn" data-role="button" data-inline="true" data-mini="true">Rules</a>
+    </div>
+  </div>
+
+  <div role="main" class="ui-content mycontent">
+    <noscript>
+      <p>This HTML5 application requires JavaScript enabled.</p>
+    </noscript>
+    <center>
+      <div id="board"></div>
+      <div id="score"></div>
+    </center>
+  </div>
+</div>
+
+<!-- Rules Page -->
+<div data-role="page" data-theme="b" id="rules-page">
+  <div data-role="header">
+    <a id="rulesBack" href="#" data-rel="back" class="ui-btn ui-btn-icon-left ui-icon-back">Back</a>
+    <h4>Rules</h4>
+  </div>
+  <div role="main" class="ui-content">
+    <p>Three random polyomino shapes appear at the top. Drag & drop them onto the 9x9 grid. Points depend on shape size. Bonus points are awarded when a row, column, or 3x3 block is cleared. Game ends when no moves remain.</p>
+    <p>Enjoy the game!</p>
+  </div>
+</div>
+<script>
+  // Rules logic
+  document.getElementById("rulesBtn").addEventListener("click", () => {
+    openWebOldLogic(() => {
+      $.mobile.changePage("#rules-page", { transition: "pop" });
+    });
+  });
+
+  // Rules back button
+  document.getElementById("rulesBack").addEventListener("click", (e) => {
+    e.preventDefault(); // stop default navigation
+    openWebOldLogic(() => {
+      window.history.back(); // go back like data-rel="back" would do
+    });
+  });
+</script>
+<script src="../../adsopenhelper.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Slither.io -- Gameboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <meta 
+        name='viewport' 
+        content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' 
+    />
+    <style>
+        /* 🔥 Header bar */
+        .game-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 50px;
+            background: #111;
+            border-bottom: 2px solid #00ffcc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 1000;
+        }
+        .game-header button {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .game-header button:hover {
+            background: #00ffcc;
+            color: #111;
+        }
+
+        body {
+            margin: 0;
+            padding-top: 50px; /* space for header */
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 🔥 Game header -->
+    <div class="game-header">
+        <button onclick="goHome()">⬅ Home</button>
+        <button onclick="restartGame()">🔄 Restart</button>
+        <button onclick="togglePause()" id="pauseBtn">⏸ Pause</button>
+    </div>
+
+    <script type="text/javascript" src="js/food.js"></script>
+    <script type="text/javascript" src="js/snake.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script src="../../adsopenhelper.js"></script>
+
+    <script>
+        let paused = false;
+
+        function goHome(){
+            openWebOldLogic(() => {
+                window.location.href = "home.html"; // adjust if needed
+            });
+        }
+
+        function restartGame(){
+            openWebOldLogic(() => {
+                window.location.href = "index.html"; // reload game
+            });
+        }
+
+        function togglePause(){
+            paused = !paused;
+            document.getElementById("pauseBtn").innerText = paused ? "▶ Resume" : "⏸ Pause";
+            if(paused){
+                die = true; // stop loop
+            } else {
+                die = false;
+                g.loop(); // resume loop
+            }
+        }
+    </script>
+</body>
+</html>

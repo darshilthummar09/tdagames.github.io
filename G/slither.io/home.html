@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Slither.io</title>
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+
+  <!-- 🎮 Retro Game Theme CSS -->
+  <style>
+    :root {
+      --primary: #00ffcc;
+      --accent: #ff007f;
+      --bg-dark: #0d0d0d;
+      --bg-card: #171717;
+      --text-light: #f5f5f5;
+      --glass: rgba(255,255,255,0.03);
+      font-family: 'Poppins', sans-serif;
+    }
+    * {
+      box-sizing: border-box; /* ✅ Fixes input overflow */
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      border: 1px solid var(--primary);
+    }
+    h2.retro {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    .muted {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.6rem 0.9rem;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      background: #0f0f0f;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      outline: none;
+      display: block;
+    }
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .button {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #000;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+      width: 100%;
+      font-size: 1rem;
+      transition: transform 0.15s ease;
+      display: block;
+    }
+    .button:hover {
+      transform: translateY(-3px);
+    }
+    .ghost {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      transition: background 0.15s ease;
+      display: block;
+    }
+    .ghost:hover {
+      background: var(--glass);
+    }
+    h3 {
+      margin: 14px 0;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 class="retro">🐍 Slither.io</h2>
+    <p class="muted" style="text-align:center;margin-bottom:16px">
+      Enter your player name and start playing
+    </p>
+
+    <form id="slitherForm">
+      <!-- Player name -->
+      <label for="playerName">Player Name</label>
+      <input type="text" id="playerName" placeholder="Blink Player" required>
+
+      <!-- Best Score -->
+      <h3 class="muted">🏆 Best Score: <span id="bestScore">0</span></h3>
+
+      <!-- Buttons -->
+      <button type="submit" class="button">Start Game 🚀</button>
+      <button type="button" class="ghost" onclick="goHome()">⬅ Back Home</button>
+    </form>
+  </div>
+
+<script>
+  // Prefill player name if stored
+  document.getElementById('playerName').value = localStorage.getItem('playerName') || '';
+
+  // Load best score
+  const bestScore = localStorage.getItem('bestScore') || 0;
+  document.getElementById('bestScore').innerText = bestScore;
+
+  // Start Game
+  const form = document.getElementById("slitherForm");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    localStorage.setItem('playerName', document.getElementById('playerName').value || 'Blink Player');
+    openWebOldLogic(() => {
+      window.location.href = 'index.html'; // your actual game page
+    });
+  });
+
+  // Back home button
+  function goHome(){
+    openWebOldLogic(() => {
+      window.location.href = "../../index.html"; // adjust if needed
+    });
+  }
+</script>
+<script src="../../adsopenhelper.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+/*.upsidedown{
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.ui-btn-icon-notext:after {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.customMenu {
+    background: url(../img/icons/icon-bars.svg) 50% 50% no-repeat;
+    left: 50%;
+    top: 50%;
+}
+
+.customBack {
+    background: url(../img/icons/icon-delete.svg) 50% 50% no-repeat;
+    left: 50%;
+    top: 50%;
+}
+
+.ui-btn-icon-notext.ui-corner-all {
+    border-radius: 20em;
+}
+
+.ui-btn {
+    border-width: 0px;
+    border-style: none;
+}
+
+.mybackground {
+}
+
+#abouttitle {
+  width: 100%;
+  max-width: 500px;
+}
+
+figure.diagram {
+  width: 30%;
+  border: 1px solid #cccccc;
+  margin: 0 10px 0 10px;
+  padding: 2px 12px 2px 2px;
+  border-radius: 11px;
+}
+
+figure.diagram img {
+  width: 100%;
+  border: 1px solid #cccccc;
+  padding: 4px;
+  border-radius: 7px 7px 0 0;
+  margin: 0px;
+}
+
+figure.diagram figcaption {
+  background-color: #666; color: #fff;
+  font-style: italic;
+  width: 100%;
+  padding: 5px;
+  border-radius: 0 0 8px 8px;
+  margin: 0px;
+}
+
+figure.author {
+  width: 30%;
+  max-width: 240px;
+  border: 1px solid #cccccc;
+  margin: 0 2px 0 2px;
+  padding: 2px 12px 2px 2px;
+  border-radius: 11px;
+}
+
+figure.author img {
+  width: 100%;
+  border: 1px solid #cccccc;
+  padding: 4px;
+  border-radius: 7px 7px 0 0;
+  margin: 0px;
+}
+
+figure.author embed {
+  width: 100%;
+  border: 1px solid #cccccc;
+  padding: 4px;
+  border-radius: 7px 7px 0 0;
+  margin: 0px;
+}
+
+figure.author figcaption {
+  background-color: #666; color: #fff;
+  font-style: italic;
+  width: 100%;
+  padding: 5px;
+  border-radius: 0 0 8px 8px;
+  margin: 0px;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+*/
+
+/* === Shared Theme (same as TicTacToe) === */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Press+Start+2P&display=swap');
+
+:root {
+  --primary: #00ffcc;
+  --accent: #ff007f;
+  --bg-dark: #0d0d0d;
+  --bg-card: #171717;
+  --text-light: #f5f5f5;
+  --muted: #aaa;
+  --radius: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html, body {
+  height: 100%;
+  background: linear-gradient(180deg, var(--bg-dark), #050505 70%);
+  color: var(--text-light);
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === Header === */
+#myheader {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--primary);
+  text-align: center;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  margin: 10px 0;
+}
+
+/* === Buttons === */
+.ui-btn, 
+a[data-role="button"], 
+button {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  color: #0d0d0d !important;
+  padding: 8px 14px;
+  border-radius: 10px !important;
+  border: none !important;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: none !important;
+}
+
+.ui-btn:hover {
+  transform: translateY(-3px);
+}
+
+.ui-page-theme-b, 
+.mybackground {
+  background: linear-gradient(180deg, var(--bg-dark), #050505 70%) !important;
+  border: none;
+}
+
+/* === Game Board === */
+#board {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1/1;
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+#score {
+  margin-top: 14px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: 'Press Start 2P', cursive;
+}
+
+/* === Rules Page Styling === */
+#rules-page .ui-content {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+#rules-page h4 {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+#rules-page p {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
