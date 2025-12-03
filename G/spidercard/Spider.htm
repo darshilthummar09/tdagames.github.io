@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spider</title>
+  <meta property="og:title" content="Spider">
+  <meta property="og:url" content="https://lrusso.github.io/Spider/Spider.htm">
+  <meta property="og:description" content="info@lrusso.com">
+  <meta property="og:image" content="https://lrusso.github.io/Spider/SpiderShare.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Spider">
+  <meta name="theme-color" content="#000000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="Spider.json">
+  <link rel="icon" sizes="16x16" type="image/png" href="SpiderFavIcon_16x16.png">
+  <link rel="icon" sizes="192x192" type="image/png" href="SpiderFavIcon_192x192.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <style>
+    html, body {
+      background-color: black;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      border: none;
+      display: none;
+      transition: transform 0.3s ease;
+    }
+
+    /* Orientation toggle button */
+    #orientationBtn {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      z-index: 9999;
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #orientationBtn:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+  </style>
+</head>
+<body>
+  <iframe id="content" src="about:blank"></iframe>
+  <button id="orientationBtn">Rotate</button>
+
+  <script>
+    let rotated = false;
+
+    function resizeContent() {
+      let iframe = document.getElementById("content");
+      iframe.style.width = window.innerWidth + "px";
+      iframe.style.height = window.innerHeight + "px";
+    }
+
+    function toggleOrientation() {
+      const iframe = document.getElementById("content");
+      rotated = !rotated;
+      if (rotated) {
+        iframe.style.transform = "rotate(-90deg) translate(-100%, 0)";
+        iframe.style.transformOrigin = "top left";
+        iframe.style.width = window.innerHeight + "px";
+        iframe.style.height = window.innerWidth + "px";
+      } else {
+        iframe.style.transform = "none";
+        resizeContent();
+      }
+    }
+
+    window.addEventListener("load", function() {
+      if (window.top === window.self) {
+        resizeContent();
+        setInterval(() => {
+          if (!rotated) resizeContent(); // don’t override manual rotation
+          document.getElementById("content").focus();
+        }, 250);
+        document.getElementById("content").src = "SpiderGame.htm";
+        document.getElementById("content").style.display = "block";
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (!rotated) resizeContent();
+    });
+
+    document.getElementById("orientationBtn").addEventListener("click", toggleOrientation);
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("worker.js").catch(() => {});
+    }
+  </script>
+</body>
+</html>

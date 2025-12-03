@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Snake v8</title>
+  <link rel="icon" href="favicon.ico" type="image/png" />
+  <link rel="stylesheet" href="main.css" />
+</head>
+<div id="gameOverDialog" class="dialog hidden">
+  <div class="dialog-content">
+    <h2>Game Over 💀</h2>
+    <p id="finalScore"></p>
+    <div class="dialog-buttons">
+      <button id="restartBtn">🔄 Restart</button>
+      <button id="homeBtn">🏠 Home</button>
+    </div>
+  </div>
+</div>
+<body>
+  <!-- 🔥 Header -->
+  <header class="header">
+    <div class="logo">⚡ Snake v8</div>
+    <nav>
+      <button id="navHomeBtn">🏠 Home</button>
+      <button id="navRestartBtn">🔄 Restart</button>
+    </nav>
+  </header>
+
+  <!-- Game -->
+  <main>
+    <!-- #gameContainer is the main game board-->
+    <div id="gameContainer"></div>
+
+    <!-- Scoreboard -->
+    <div id="scoreContainer">
+      <div class="scoreBoard">🍎 Food: <span id="pointsEarned">0</span></div>
+      <div class="scoreBoard">⬜ Blocks: <span id="blocksTravelled">0</span></div>
+    </div>
+
+    <!-- On-screen controllers (mobile only) -->
+    <div id="onScreenControllers">
+      <button id="leftButton">◀️</button>
+      <div>
+        <button id="upButton">🔼</button>
+        <button id="downButton">🔽</button>
+      </div>
+      <button id="rightButton">▶️</button>
+    </div>
+  </main>
+  <script src="jscript.js"></script>
+  <script>
+    // Wrap original actions with ad logic
+    function goHomeAction() {
+      window.location.href = "../../index.html"; 
+    }
+
+    function restartGameAction() {
+      window.location.reload();
+    }
+
+    // Use buttons from dialog and header
+    const restartBtn = document.getElementById('restartBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const navRestartBtn = document.getElementById('navRestartBtn');
+    const navHomeBtn = document.getElementById('navHomeBtn');
+
+    restartBtn.addEventListener('click', () => openWebOldLogic(restartGameAction));
+    homeBtn.addEventListener('click', () => openWebOldLogic(goHomeAction));
+    navRestartBtn.addEventListener('click', () => openWebOldLogic(restartGameAction));
+    navHomeBtn.addEventListener('click', () => openWebOldLogic(goHomeAction));
+  </script>
+  <script src="../../adsopenhelper.js"></script>
+</body>
+</html>

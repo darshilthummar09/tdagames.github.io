@@ -1,0 +1,188 @@
+body {
+  margin: 0;
+  font-family: "Press Start 2P", cursive, monospace;
+  background-color: #0c1021;
+  color: #00ffcc;
+  text-align: center;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #111;
+  border-bottom: 2px solid #00ffcc;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header .logo {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00ffcc;
+}
+.header button {
+  background: transparent;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  padding: 6px 10px;
+  margin-left: 8px;
+  font-size: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.header button:hover {
+  background: #00ffcc;
+  color: #111;
+}
+
+/* Game board */
+#gameContainer {
+  width: 40vw;
+  height: 40vw;
+  margin: 20px auto;
+  background: #000;
+  border: 4px solid #00ffcc;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00ffcc55;
+}
+.gameBoardPixel {
+  width: 1vw;
+  height: 1vw;
+  float: left;
+  border-radius: 4px;
+}
+
+/* Snake + Food */
+.snakeBodyPixel {
+  background: #ff0066;
+  box-shadow: 0 0 6px #ff0066;
+}
+.food {
+  background: #00ffcc;
+  box-shadow: 0 0 6px #00ffcc;
+}
+
+/* Scoreboard */
+#scoreContainer {
+  width: 40vw;
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.scoreBoard {
+  flex: 1;
+  background: #111;
+  border: 2px solid #00ffcc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 10px #00ffcc55;
+}
+
+/* Footer */
+.footer {
+  margin-top: 20px;
+  padding: 10px;
+  color: #888;
+  font-size: 0.7rem;
+}
+.footer a {
+  color: #00ffcc;
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* On-screen controllers (hidden desktop) */
+#onScreenControllers {
+  display: none;
+}
+@media (max-width: 768px) {
+  #gameContainer {
+    width: 80vw;
+    height: 80vw;
+  }
+  .gameBoardPixel {
+    width: 2vw;
+    height: 2vw;
+  }
+  #scoreContainer {
+    width: 80vw;
+  }
+  #onScreenControllers {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 20px auto;
+    width: 80vw;
+  }
+  #onScreenControllers > div {
+    display: flex;
+    flex-direction: column;
+  }
+  #onScreenControllers button {
+    background: #111;
+    border: 2px solid #00ffcc;
+    color: #00ffcc;
+    border-radius: 8px;
+    height: 18vw;
+    width: 18vw;
+    font-size: 8vw;
+  }
+  #onScreenControllers button:active {
+    background: #00ffcc;
+    color: #111;
+  }
+}
+/* Dialog styles */
+.dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.dialog.hidden {
+  display: none;
+}
+.dialog-content {
+  background: #111;
+  border: 2px solid #00ffcc;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: #00ffcc;
+  box-shadow: 0 0 20px #00ffcc55;
+  width: 300px;
+}
+.dialog-content h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.dialog-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+.dialog-buttons button {
+  background: transparent;
+  border: 2px solid #00ffcc;
+  color: #00ffcc;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dialog-buttons button:hover {
+  background: #00ffcc;
+  color: #111;
+}
+
