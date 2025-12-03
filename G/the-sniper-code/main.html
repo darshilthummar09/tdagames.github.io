@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<title>The Sniper Code - Fun HTML5 Game | TDAgames</title>
+    <meta name="description" content="Play The Sniper Code online, the popular HTML5 game by TDAgames. Aim Persons, complete levels, and enjoy thrilling challenges directly in your browser.">
+    <meta name="keywords" content="The Sniper Code, HTML5 game, browser game, TDAgames, online playing game, free games">
+    <meta name="author" content="TDAgames">
+	<style>
+		@font-face {
+			font-family: "Digital dream Fat";
+			src: url(fonts/DIGITALDREAMFAT.ttf) format("truetype");
+		}
+
+		@font-face {
+			font-family: "DINEngschrift";
+			src: url(fonts/DINEngschrift-Regular.ttf) format("truetype");
+		}
+
+
+		html,
+		body {
+			overflow-x: hidden;
+			overflow-y: hidden;
+			text-align: center;
+			touch-action: none;
+
+
+		}
+
+		/*html{
+    -ms-touch-action: none; 
+}*/
+
+
+		#debugText {
+			display: none;
+			position: absolute;
+			left: 20px;
+			top: 10px;
+			color: #ff0000;
+			font-size: 20px;
+			z-index: 9999;
+		}
+	</style>
+	<!--  <meta name="viewport" content="user-scalable=0,maximum-scale=1">-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<script src="https://blinkgames007.github.io/blink-sdk.js"></script>
+
+	<script src="libs/easeljs-0.7.1.min.js"></script>
+
+	<script src="libs/tweenjs-0.5.1.min.js"></script>
+	<script src="libs/preloadjs-0.4.1.min.js"></script>
+	<script src="libs/movieclip-0.7.1.min.js"></script>
+
+	<script src="libs/soundjs.min.js"></script>
+	<script src="scripts/particles.js"></script>
+	<script src="scripts/engine.js"></script>
+	<script src="scripts/hKineticScroller.js"></script>
+	<script src="scripts/runnerEngine.js"></script>
+	<script src="scripts/soundEngine.js"></script>
+
+	<script src="scripts/sniper.js"></script>
+	<script src="sniper-game.js"></script>
+
+
+	<script>
+		var canvas, stage, exportRoot;
+		var itemsLoaded, itemsToLoad = 0;
+		window.firstAD = false;
+
+
+		function resizeEvent() {
+
+
+
+			var gameWidth = document.documentElement.clientWidth;
+			var gameHeight = document.documentElement.clientHeight;
+
+
+			if (!_this) {
+				return;
+			}
+			
+			if (gameWidth < gameHeight) {
+				_this.rotationMC.visible = true;
+			}
+			else {
+				_this.rotationMC.visible = false;
+			}
+
+			cnW = gameWidth;
+			cnH = gameHeight;
+			var scaleToFitX = gameWidth / 800;
+			var scaleToFitY = gameHeight / 480;
+			var pRatio = window.devicePixelRatio || 1;
+			var canvas = document.getElementById("canvas");
+
+			var currentScreenRatio = gameWidth / gameHeight;
+			var optimalRatio = Math.min(scaleToFitX, scaleToFitY);
+
+			if (currentScreenRatio >= 1.77 && currentScreenRatio <= 1.79) {
+				canvas.width = gameWidth;
+				canvas.height = gameHeight;
+
+			} else {
+				canvas.width = 800 * optimalRatio;
+				canvas.height = 480 * optimalRatio;
+
+				//    cnW = 480 * optimalRatio;
+				//  cnH = 800 * optimalRatio;
+				//      canvas.style.left = (gameWidth - cnW) / 2 + "px";
+				//        canvas.style.marginTop = (gameHeight- cnH) / 2 + "px";
+
+			}
+
+			canvas.width = window.innerWidth * pRatio;
+			canvas.height = window.innerHeight * pRatio;
+
+			canvas.style.width = window.innerWidth + "px";
+			var tmp = Math.abs(-800 + (window.innerWidth / window.innerHeight) * 480);
+			stage.regX = oldStageX - tmp / 2;
+
+			window.stageLeftMargin = -1 * (oldStageX - tmp / 2);
+			var gameWidth = window.innerWidth
+			var gameHeight = window.innerHeight;
+			var scaleToFitX = gameWidth / 800;
+			var scaleToFitY = gameHeight / 480;
+			var currentScreenRatio = gameWidth / gameHeight;
+			var optimalRatio = Math.min(scaleToFitX, scaleToFitY);
+			stage.scaleX = optimalRatio * pRatio;
+			stage.scaleY = optimalRatio * pRatio;
+
+			if (window.innerWidth / window.innerHeight < 800 / 480) {
+				stage.regX = oldStageX;
+			}
+
+
+		}
+
+
+		var oldStageX = 0;
+
+		function init() {
+			PokiSDK.init().then(
+				() => {
+					console.log("Poki SDK successfully initialized");
+					// your code to continue to game
+					initGame();
+				}
+			).catch(
+				() => {
+					console.log("Initialized, but the user likely has adblock");
+					// your code to continue to game
+					initGame();
+				}
+			);
+			PokiSDK.setDebug(false);
+
+		}
+
+		function pokiCommercialBreak(cb) {
+			createjs.Ticker.setFPS(1);
+			createjs.Sound.muted = true;
+
+			if (window.currentGameState == "play") {
+				PokiSDK.gameplayStop();
+			}
+
+			PokiSDK.commercialBreak().then(
+				() => {
+					console.log("Commercial break finished");
+					//	alert("commercial break ended");
+					createjs.Ticker.setFPS(lib.properties.fps);
+					createjs.Sound.muted = false;
+					//					PokiSDK.gameplayStart();
+
+					if (cb) {
+						cb();
+					}
+					// your code to continue to game
+				}
+			);
+		}
+
+
+
+		function initGame() {
+			PokiSDK.gameLoadingStart();
+
+			canvas = document.getElementById("canvas");
+			images = images || {};
+
+
+			// canvas.width = 800 * optimalRatio ;
+			//	  canvas.height = 480 * optimalRatio;
+
+			itemsToLoad = lib.properties.manifest.length;
+			itemsLoaded = 0;
+			var loader = new createjs.LoadQueue(false);
+			loader.addEventListener("fileload", handleFileLoad);
+			loader.addEventListener("complete", handleComplete);
+			loader.loadManifest(lib.properties.manifest);
+
+
+			/*
+			setTimeout(
+			
+			function(){
+			document.getElementById("canvas").style.display = "block";
+			},1500);*/
+		}
+
+
+		function handleFileLoad(evt) {
+
+			itemsLoaded++;
+			var percent = Math.round((itemsLoaded / itemsToLoad) * 100);
+			//document.getElementById("loaderBarFG").style.width = percent + "%";
+			//document.getElementById("loaderPercent").innerHTML = percent + "%";
+			document.getElementById("gameLoaderPerc").innerHTML = percent + "%";
+			if (percent > 99) {
+				document.getElementById("gameLoader").style.display = "none";
+			}
+
+			if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+		}
+
+		function handleComplete() {
+			PokiSDK.gameLoadingFinished();
+
+			exportRoot = new lib.snipergame();
+
+			stage = new createjs.Stage(canvas);
+			stage.addChild(exportRoot);
+
+
+			oldStageX = stage.regX;
+			stage.update();
+
+
+			createjs.Ticker.setFPS(lib.properties.fps);
+			createjs.Ticker.addEventListener("tick", stage);
+
+			resizeEvent();
+
+		}
+	</script>
+</head>
+
+<body onload="init();" style="background-color:#000000;margin:0;" onresize="resizeEvent();">
+	<div id="gameLoader"
+		style="user-select:none;background-color:black;width:100%;height:100%;position:absolute;text-align:center;color:white;    font-family: 'Digital dream Fat', serif;">
+		<div style="top: 50%; transform: translate(-50%, -50%); position: absolute; left: 50%;">
+			<div style="font-weight:bold;font-size:20px;"> The Sniper Code<br /><br /></div>
+			<div style="font-size:14px;margin-bottom:15px;">Developed by Softlitude<br /><br /> </div>
+			<div>Loading... <span id="gameLoaderPerc"> 0%</span></div>
+
+		</div>
+	</div>
+	<canvas id="canvas" width="800" height="480" style="background-color:#000000"></canvas>
+	<div id="debugText" style="display:none"></div>
+</body>
+
+</html>

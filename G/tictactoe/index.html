@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tic Tac Toe -- Gameboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favicon.ico">
+</head>
+<body>
+  <div class="card">
+    <div class="retro">🎯 Tic Tac Toe</div>
+
+    <div id="statusRow" class="status">
+      <div id="turnBubble" class="turn-bubble">Waiting</div>
+    </div>
+
+    <div id="board" class="board" role="grid" aria-label="Tic Tac Toe board"></div>
+    <canvas id="overlay" class="canvas-overlay"></canvas>
+
+    <div class="toolbar">
+      <button id="restartBtn" class="button">Restart</button>
+      <button id="homeBtn" class="ghost">Back to Setup</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // DOM refs
+  const boardEl = document.getElementById('board');
+  const overlay = document.getElementById('overlay');
+  const ctx = overlay.getContext('2d');
+  const restartBtn = document.getElementById('restartBtn');
+  const homeBtn = document.getElementById('homeBtn');
+  const turnBubble = document.getElementById('turnBubble');
+
+  // load setup from localStorage
+  const setup = JSON.parse(localStorage.getItem('ticSetup') || '{}');
+  const mode = setup.mode || 'pvp';
+  const players = { X: setup.player1 || 'Player X', O: setup.player2 || (mode==='pva' ? 'AI' : 'Player O') };
+
+  // game state
+  let board = Array(9).fill(null);
+  let current = 'X';
+  let aiPlayer = (mode === 'pva') ? 'O' : null;
+  let playing = true;
+
+  // utility for preferring center/corners on ties
+  const movePreference = [4,0,2,6,8,1,3,5,7];
+
+  // create 3x3 cells
+  function renderBoard(){
+    boardEl.innerHTML = '';
+    for(let i=0;i<9;i++){
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.i = i;
+      cell.setAttribute('role','button');
+      cell.setAttribute('aria-label','Cell '+(i+1));
+      cell.innerText = board[i] ? (board[i] === 'X' ? '✕' : '◯') : '';
+      cell.onclick = ()=> onCellClick(i);
+      boardEl.appendChild(cell);
+    }
+    resizeCanvas();
+    updateStatus();
+  }
+
+  function resizeCanvas(){
+    // overlay size must match board's inner drawing area (exclude board padding)
+    const rect = boardEl.getBoundingClientRect();
+    overlay.width = rect.width;
+    overlay.height = rect.height;
+    overlay.style.left = boardEl.offsetLeft + 'px';
+    overlay.style.top = boardEl.offsetTop + 'px';
+    ctx.clearRect(0,0,overlay.width,overlay.height);
+  }
+
+  function updateStatus(){
+    if(!playing){
+      turnBubble.textContent = 'Game over';
+    } else {
+      turnBubble.textContent = `${players[current]} — ${current}`;
+    }
+  }
+
+  function onCellClick(i){
+    if(!playing) return;
+    if(board[i]) return;
+    if(mode === 'pva' && current === aiPlayer) return;
+    place(i, current);
+    afterMove();
+  }
+
+  function place(i, player){
+    board[i] = player;
+    renderBoard();
+  }
+
+  function switchTurn(){ current = current === 'X' ? 'O' : 'X'; updateStatus(); }
+
+  // after a move: check winner/draw, animate, or continue (AI move if needed)
+  function afterMove(){
+    const res = checkWinner(board);
+    if(res){
+      playing = false;
+      if(res.player === 'Draw'){
+        // draw (no line)
+        showGameOverDialog('Draw');
+      } else {
+        drawWinPattern(res.line, res.player);
+        setTimeout(()=> showGameOverDialog(players[res.player]), 650);
+      }
+      return;
+    }
+    if(board.every(Boolean)){
+      playing = false;
+      showGameOverDialog('Draw');
+      return;
+    }
+    switchTurn();
+    if(mode === 'pva' && current === aiPlayer && playing){
+      setTimeout(()=> {
+        const m = bestMove(board, aiPlayer);
+        if(m >= 0) { place(m, aiPlayer); afterMove(); }
+      }, 220);
+    }
+  }
+
+  // ---------- Perfect minimax AI with tie-breaker ----------
+  function bestMove(bd, aiP){
+    let bestScore = -Infinity;
+    let bestMoves = [];
+    for(let i=0;i<9;i++){
+      if(!bd[i]){
+        bd[i] = aiP;
+        const score = minimax(bd, false, aiP);
+        bd[i] = null;
+        if(score > bestScore){
+          bestScore = score;
+          bestMoves = [i];
+        } else if(score === bestScore){
+          bestMoves.push(i);
+        }
+      }
+    }
+    // tie-breaker: prefer center -> corners -> edges
+    if(bestMoves.length > 1){
+      for(const pref of movePreference){
+        if(bestMoves.includes(pref)) return pref;
+      }
+      return bestMoves[0];
+    }
+    return bestMoves[0] ?? -1;
+  }
+
+  function minimax(bd, isMax, aiP){
+    const evalRes = evaluate(bd, aiP);
+    if(evalRes !== null) return evalRes;
+    if(isMax){
+      let best = -Infinity;
+      for(let i=0;i<9;i++) if(!bd[i]){ bd[i]=aiP; best = Math.max(best, minimax(bd,false,aiP)); bd[i]=null; }
+      return best;
+    } else {
+      let best = Infinity;
+      const human = aiP === 'X' ? 'O' : 'X';
+      for(let i=0;i<9;i++) if(!bd[i]){ bd[i]=human; best = Math.min(best, minimax(bd,true,aiP)); bd[i]=null; }
+      return best;
+    }
+  }
+
+  function evaluate(bd, aiP){
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    for(const [a,b,c] of wins){
+      if(bd[a] && bd[a]===bd[b] && bd[b]===bd[c]) return bd[a] === aiP ? 10 : -10;
+    }
+    if(bd.every(Boolean)) return 0;
+    return null;
+  }
+
+  // ---------- Winner detection returning line + player ----------
+  function checkWinner(bd){
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    for(const w of wins){
+      const [a,b,c] = w;
+      if(bd[a] && bd[a]===bd[b] && bd[b]===bd[c]) return { line: w, player: bd[a] };
+    }
+    if(bd.every(Boolean)) return { line: null, player: 'Draw' };
+    return null;
+  }
+
+  // ---------- Responsive win animation (draws a line between centers) ----------
+  function drawWinPattern(indices, player){
+    if(!indices || indices.length < 2) return;
+    ctx.clearRect(0,0,overlay.width,overlay.height);
+    // compute cell centers using DOM
+    const cells = boardEl.querySelectorAll('.cell');
+    const rect = boardEl.getBoundingClientRect();
+    const centers = indices.map(i => {
+      const el = cells[i];
+      const r = el.getBoundingClientRect();
+      // coordinates relative to overlay (which covers board)
+      const x = r.left - rect.left + r.width/2;
+      const y = r.top - rect.top + r.height/2;
+      return {x,y};
+    });
+
+    // draw animated line from first to last
+    const start = centers[0], end = centers[centers.length-1];
+    const steps = 40;
+    let step = 0;
+    const strokeColor = player === 'X' ? 'rgba(255,130,130,0.98)' : 'rgba(0,255,204,0.98)';
+    ctx.lineWidth = Math.max(6, Math.min(overlay.width, overlay.height) * 0.03);
+    ctx.lineCap = 'round';
+
+    const anim = setInterval(()=>{
+      step++;
+      ctx.clearRect(0,0,overlay.width,overlay.height);
+      ctx.beginPath();
+      ctx.moveTo(start.x, start.y);
+      const t = step / steps;
+      const curX = start.x + (end.x - start.x) * t;
+      const curY = start.y + (end.y - start.y) * t;
+      ctx.lineTo(curX, curY);
+      ctx.strokeStyle = strokeColor;
+      ctx.stroke();
+
+      // decorative dot
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.arc(curX, curY, Math.max(6, ctx.lineWidth*0.6), 0, Math.PI*2);
+      ctx.fill();
+
+      if(step >= steps){
+        clearInterval(anim);
+        confettiBurst();
+        setTimeout(()=> ctx.clearRect(0,0,overlay.width,overlay.height), 1600);
+      }
+    }, 12);
+  }
+
+  // ---------- Confetti burst ----------
+  function confettiBurst(){
+    const colors = ['#00ffcc','#ff007f','#ffd166','#4adf8c','#7c3aed'];
+    const rootW = overlay.clientWidth || 400;
+    for(let i=0;i<28;i++){
+      const el = document.createElement('div');
+      el.className = 'confetti';
+      el.style.background = colors[i % colors.length];
+      el.style.left = (50 + (Math.random()-0.5) * (rootW * 0.9)) + 'px';
+      el.style.top = (40 + Math.random()*40) + 'px';
+      el.style.width = (6 + Math.random()*10) + 'px';
+      el.style.height = (10 + Math.random()*18) + 'px';
+      el.style.opacity = '1';
+      el.style.transform = `translateX(-50%) translateY(-40px) rotate(${Math.random()*360}deg)`;
+      el.style.transition = 'transform 1100ms cubic-bezier(.2,.8,.2,1), opacity 1100ms';
+      document.body.appendChild(el);
+      requestAnimationFrame(()=> {
+        const tx = (Math.random()-0.5) * 700;
+        const ty = 200 + Math.random()*300;
+        const rot = (Math.random()*720-360);
+        el.style.transform = `translateX(${tx}px) translateY(${ty}px) rotate(${rot}deg)`;
+        el.style.opacity = '0';
+      });
+      setTimeout(()=> el.remove(), 1200);
+    }
+  }
+
+  // ---------- Game over dialog with winner name + restart/home ----------
+  function showGameOverDialog(winnerName){
+    const wrapper = document.createElement('div');
+    wrapper.className = 'modal-backdrop';
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    const title = (winnerName === 'Draw') ? 'Draw' : `${winnerName} wins!`;
+    modal.innerHTML = `<h3>${ title }</h3>
+                       <p>${ winnerName === 'Draw' ? 'Nobody wins — it\'s a draw.' : 'Great game — congrats!'}</p>
+                       <div style="display:flex;gap:10px;justify-content:center;margin-top:12px">
+                         <button id="dlgRestart" class="button" style="width:auto;padding:10px 14px">Restart</button>
+                         <button id="dlgHome" class="ghost" style="width:auto;padding:8px 12px">Go to Setup</button>
+                       </div>`;
+    wrapper.appendChild(modal);
+    wrapper.addEventListener('click', e => { if(e.target === wrapper) wrapper.remove(); });
+    document.body.appendChild(wrapper);
+    
+    // Restart button
+    document.getElementById('dlgRestart').addEventListener('click', () => {
+      openWebOldLogic(() => {
+        wrapper.remove();
+        restart();
+      });
+    });
+
+    // Home button
+    document.getElementById('dlgHome').addEventListener('click', () => {
+      openWebOldLogic(() => {
+        localStorage.removeItem('ticSetup');
+        window.location.href = 'setup.html';
+      });
+    });
+
+  }
+
+  // restart game
+  function restart(){
+    board = Array(9).fill(null);
+    current = 'X';
+    playing = true;
+    ctx.clearRect(0,0,overlay.width,overlay.height);
+    renderBoard();
+  }
+
+  // attach buttons
+  // restartBtn.addEventListener('click', restart);
+  // homeBtn.addEventListener('click', ()=> window.location.href = 'setup.html');
+
+  restartBtn.addEventListener('click', () => {
+    openWebOldLogic(restart);
+  });
+
+  homeBtn.addEventListener('click', () => {
+    openWebOldLogic(() => window.location.href = 'setup.html');
+  });
+
+  // initial render
+  renderBoard();
+
+  // if AI should start (rare), allow it to move
+  if(mode === 'pva' && current === aiPlayer){
+    setTimeout(()=> { const m = bestMove(board, aiPlayer); if(m>=0){ place(m, aiPlayer); afterMove(); } }, 220);
+  }
+
+  // keep overlay sized on resize
+  window.addEventListener('resize', resizeCanvas);
+
+})();
+</script>
+<script src="../../adsopenhelper.js"></script>
+</body>
+</html>

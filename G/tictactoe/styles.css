@@ -1,0 +1,203 @@
+/* fonts + theme match your main website */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Press+Start+2P&display=swap');
+
+:root{
+  --primary: #00ffcc;
+  --accent: #ff007f;
+  --bg-dark: #0d0d0d;
+  --bg-card: #171717;
+  --text-light: #f5f5f5;
+  --muted: #aaa;
+  --glass: rgba(255,255,255,0.03);
+  --radius: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background: linear-gradient(180deg, var(--bg-dark), #050505 70%);
+  color:var(--text-light);
+  -webkit-font-smoothing:antialiased;
+  font-family: 'Poppins', sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:28px 16px;
+  min-height:100vh;
+}
+
+/* main card wrapper */
+.card{
+  background:var(--bg-card);
+  width:100%;
+  max-width:980px;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.06);
+}
+
+/* heading uses retro font like main site */
+.retro {
+  font-family: 'Press Start 2P', cursive;
+  color:var(--primary);
+  text-align:center;
+  margin-bottom:12px;
+  font-size:clamp(1rem,2.8vw,1.4rem);
+}
+
+/* small toolbar under board */
+.toolbar {
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top:14px;
+  flex-wrap:wrap;
+}
+.button {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  color:#0d0d0d;
+  padding:10px 14px;
+  border-radius:10px;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .12s ease;
+  font-family: 'Poppins', sans-serif;
+}
+.button:hover{transform:translateY(-3px)}
+.ghost {
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.06);
+  color:var(--muted);
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+/* status row */
+.status {
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  align-items:center;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.turn-bubble{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  color:var(--primary);
+  font-weight:700;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* responsive square board container */
+.board {
+  width:100%;
+  max-width:560px; /* allow larger on big screens */
+  margin:18px auto 0;
+  aspect-ratio:1/1;  /* entire board is square */
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  padding:12px;
+  background:linear-gradient(180deg,#0b0b0b,var(--bg-card));
+  border-radius:16px;
+  position:relative;
+}
+
+/* cells always square and scalable */
+.cell{
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  aspect-ratio:1/1;
+  cursor:pointer;
+  user-select:none;
+  transition:transform .12s ease, box-shadow .12s ease;
+  font-family: 'Press Start 2P', cursive;
+  font-size: clamp(1.8rem, 6.2vw, 3.6rem);
+  font-weight:900;
+}
+.cell:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 30px rgba(0,255,204,0.10);
+}
+
+/* overlay for drawing animated line */
+.canvas-overlay{position:absolute;inset:0;pointer-events:none;}
+
+/* confetti pieces */
+.confetti{
+  position:fixed;
+  left:50%;
+  top:20%;
+  transform:translateX(-50%) translateY(-40px);
+  opacity:1;
+  border-radius:3px;
+  pointer-events:none;
+}
+
+/* modal dialog */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+}
+.modal{
+  background:var(--bg-card);
+  padding:18px;
+  border-radius:12px;
+  width:94%;
+  max-width:420px;
+  border:1px solid rgba(255,255,255,0.06);
+  text-align:center;
+}
+.modal h3{ color:var(--primary); font-family:'Press Start 2P', cursive; margin-bottom:8px; }
+.modal p{ color:var(--muted); margin-bottom:12px; }
+
+/* responsive tweaks */
+@media (max-width:920px){
+  .board{max-width:460px; gap:12px; padding:10px}
+}
+@media (max-width:720px){
+  body{padding:18px}
+  .board{max-width:360px; gap:10px}
+  .toolbar{flex-direction:column}
+  .cell{font-size: clamp(1.6rem, 10vw, 2.8rem)}
+}
+/* Input fields (same as main search bar) */
+form input,
+form select {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  background: #0f0f0f;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(255, 0, 127, 0.4);
+}
+
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
