@@ -25,7 +25,7 @@ if (!window.config.unityWebglLoaderUrl) {
     // }
 }
 var sdkScript = document.createElement("script");
-sdkScript.src = "https://blinkgames007.github.io/blink-sdk.js", sdkScript.onload = function() {
+sdkScript.src = "https://tdagames.github.io/blink-sdk.js", sdkScript.onload = function() {
     var i = document.createElement("script");
     i.src = root + loader, document.body.appendChild(i)
 }, document.body.appendChild(sdkScript);
