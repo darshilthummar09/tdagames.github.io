@@ -28,27 +28,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ================= SOCIALS =================
-  const socials = info.socials || {};
   const socialContainer = document.querySelector(".footer-socials");
   if (socialContainer) {
     socialContainer.innerHTML = "";
-    // Using local images to avoid third-party dependency
-    const iconCDN = {
-      facebook: "assets/facebook.png",
-      twitter: "assets/twitter.png",
-      linkedin: "assets/linkedin.png",
-      instagram: "assets/instagram.png"
-    };
-    Object.entries(socials).forEach(([platform, url]) => {
-      const link = document.createElement("a");
-      link.href = url; link.target = "_blank"; link.rel = "noopener";
-      const iconImg = document.createElement("img");
-      iconImg.src = iconCDN[platform] || iconCDN.facebook;
-      iconImg.alt = platform;
-      iconImg.className = "social-icon";
-      link.appendChild(iconImg);
-      socialContainer.appendChild(link);
-    });
+    // Social links removed as requested
   }
 
   // ================= GAMES =================
