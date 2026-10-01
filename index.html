@@ -16,8 +16,8 @@
   <meta property="og:title" content="TDAgames - Free Online Games" />
   <meta property="og:description"
     content="Play the best free online games at TDAgames. Explore a huge collection of fun, casual, and action-packed games. No downloads required, just click and play!" />
-  <meta property="og:url" content="https://blinkgames007.github.io/" />
-  <meta property="og:image" content="https://blinkgames007.github.io/assets/logo.png" />
+  <meta property="og:url" content="https://tdagames.github.io/" />
+  <meta property="og:image" content="https://tdagames.github.io/assets/logo.png" />
   <meta property="og:site_name" content="TDAgames" />
   <meta property="og:type" content="website" />
 
@@ -25,10 +25,10 @@
   <meta name="twitter:title" content="TDAgames - Free Online Games" />
   <meta name="twitter:description"
     content="Play the best free online games at TDAgames. Explore a huge collection of fun, casual, and action-packed games. No downloads required, just click and play!" />
-  <meta name="twitter:image" content="https://blinkgames007.github.io/assets/logo.png" />
+  <meta name="twitter:image" content="https://tdagames.github.io/assets/logo.png" />
   <meta name="google-adsense-account" content="ca-pub-5879890926266784"/>
 
-  <link rel="canonical" href="https://blinkgames007.github.io/" />
+  <link rel="canonical" href="https://tdagames.github.io/" />
   <meta name="google-site-verification" content="HdAHKl3NsVv8wgf_KGgqA82Ij2uCK9If_223oF3PIUA" />
 
   <link rel="icon" href="favicon.png" type="image/png" />
@@ -39,7 +39,7 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "TDAgames",
-    "url": "https://blinkgames007.github.io/",
+    "url": "https://tdagames.github.io/",
     "description": "Play the best free online games at TDAgames. Explore a huge collection of fun, casual, and action-packed games. No downloads required, just click and play!"
   }
   </script>
@@ -121,7 +121,7 @@
           <div class="company-logo"></div>
           <h2 class="company-name">TDAgames</h2>
         </div>
-        <p class="dev-company">Developed by <span class="company-owner"></p>
+        <p class="dev-company">Developed by <span class="company-owner">TDAgames</span></p>
         <div class="footer-socials" id="footer-socials"></div>
       </div>
 
@@ -144,22 +144,24 @@
       </div>
     </div>
     <p class="footer-bottom">
-      &copy; <span id="year"></span> <span class="website-name"></span>. All rights reserved. <br>
-      Powered by <strong><span class="company-owner"></strong>
+      <span id="year">2026</span> <span class="website-name">TDAgames</span>. All rights reserved. <br>
+      Powered by <strong><span class="company-owner">TDAgames</span></strong>
     </p>
   </footer>
 
   <!-- ================= SCRIPTS ================= -->
-  <script src="config.js"></script>
-  <script src="GoogleAdsManager.js"></script>
-  <script>
-    const ads = new GoogleAdsManager("ca-pub-9301267932926503");
-    ads.loadAutoAds();
-    ads.loadAdUnit("banner1", "3089669868", "auto");
-    ads.loadAdUnit("banner2", "3089669868", "auto");
+  <script src="config.js" defer></script>
+  <script src="GoogleAdsManager.js" defer></script>
+  <script defer>
+    window.addEventListener('DOMContentLoaded', () => {
+      const ads = new GoogleAdsManager("ca-pub-9301267932926503");
+      ads.loadAutoAds();
+      ads.loadAdUnit("banner1", "3089669868", "auto");
+      ads.loadAdUnit("banner2", "3089669868", "auto");
+    });
   </script>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 
 </html>

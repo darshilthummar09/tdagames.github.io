@@ -1,16 +1,24 @@
 // ================= GLOBAL INIT =================
-document.getElementById('year').textContent = new Date().getFullYear();
-
 document.addEventListener("DOMContentLoaded", async () => {
-  const info = await fetchCompanyInfo();
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  let info = {};
+  try {
+    info = await fetchCompanyInfo();
+  } catch (e) {
+    console.error("Error fetching company info:", e);
+  }
 
   // ================= BRAND =================
-  document.title = info.title || info.name;
-  document.querySelectorAll(".company-name").forEach(el => el.textContent = info.name);
-  document.querySelectorAll(".company-owner").forEach(el => el.textContent = info.company);
-  document.querySelectorAll(".company-logo").forEach(c => {
-    c.innerHTML = `<img src="${info.logo}" alt="${info.name}" class="logo-img">`;
-  });
+  if (info.title || info.name) document.title = info.title || info.name;
+  if (info.name) document.querySelectorAll(".company-name").forEach(el => el.textContent = info.name);
+  if (info.company) document.querySelectorAll(".company-owner").forEach(el => el.textContent = info.company);
+  if (info.logo) {
+    document.querySelectorAll(".company-logo").forEach(c => {
+      c.innerHTML = `<img src="${info.logo}" alt="${info.name}" class="logo-img">`;
+    });
+  }
 
   // Favicon
   if (info.favicon) {
@@ -22,115 +30,146 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ================= SOCIALS =================
   const socials = info.socials || {};
   const socialContainer = document.querySelector(".footer-socials");
-  socialContainer.innerHTML = "";
-  const iconCDN = {
-    facebook: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
-    twitter: "https://cdn-icons-png.flaticon.com/512/733/733579.png",
-    linkedin: "https://cdn-icons-png.flaticon.com/512/145/145807.png",
-    instagram: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-  };
-  Object.entries(socials).forEach(([platform, url]) => {
-    const link = document.createElement("a");
-    link.href = url; link.target = "_blank"; link.rel = "noopener";
-    link.innerHTML = `<img src="${iconCDN[platform] || iconCDN.facebook}" alt="${platform}" class="social-icon">`;
-    socialContainer.appendChild(link);
-  });
+  if (socialContainer) {
+    socialContainer.innerHTML = "";
+    // Using local images to avoid third-party dependency
+    const iconCDN = {
+      facebook: "assets/facebook.png",
+      twitter: "assets/twitter.png",
+      linkedin: "assets/linkedin.png",
+      instagram: "assets/instagram.png"
+    };
+    Object.entries(socials).forEach(([platform, url]) => {
+      const link = document.createElement("a");
+      link.href = url; link.target = "_blank"; link.rel = "noopener";
+      const iconImg = document.createElement("img");
+      iconImg.src = iconCDN[platform] || iconCDN.facebook;
+      iconImg.alt = platform;
+      iconImg.className = "social-icon";
+      link.appendChild(iconImg);
+      socialContainer.appendChild(link);
+    });
+  }
 
   // ================= GAMES =================
-  const games = await fetchGames(info.apis?.games);
-  const mainContainer = document.getElementById("games").querySelector(".games-container"); // main games container
-  mainContainer.innerHTML = "";
-  games.forEach(game => mainContainer.appendChild(createGameCard(game)));
+  let games = [];
+  try {
+    games = await fetchGames(info.apis?.games);
+  } catch(e) {
+    console.error("Games fetch failed:", e);
+  }
+  
+  const gamesSec = document.getElementById("games");
+  if (gamesSec) {
+    const mainContainer = gamesSec.querySelector(".games-container");
+    if (mainContainer) {
+      mainContainer.innerHTML = "";
+      if (!games || games.length === 0) {
+        mainContainer.textContent = "No games found. Please try again later.";
+      } else {
+        window.allGamesData = games;
+        games.forEach(game => mainContainer.appendChild(createGameCard(game)));
+      }
+    }
+  }
 
   // ================= RECENTLY PLAYED =================
-  renderRecentlyPlayed(); // fills #recent-container
-
+  renderRecentlyPlayed();
 
   // ================= SEARCH =================
   const searchInput = document.getElementById("gameSearch");
   searchInput?.addEventListener("input", () => filterGames(searchInput.value));
-
 });
 
 // ================= GAME CARD =================
 function createGameCard(game) {
-  const card = document.createElement("div");
+  const card = document.createElement("a");
   card.className = "game-card";
-  card.innerHTML = `
-    <img src="${game.thumbnail}" alt="${game.title}" loading="lazy">
-    <h4>${game.title}</h4>
-  `;
-  // card.addEventListener("click", () => window.location.href = game.page);
+  card.href = game.page;
+  
+  const img = document.createElement("img");
+  img.src = game.thumbnail;
+  img.alt = game.title;
+  img.loading = "lazy";
+  
+  const h4 = document.createElement("h4");
+  h4.textContent = game.title;
+  
+  card.appendChild(img);
+  card.appendChild(h4);
 
-//testing
-  card.addEventListener("click", () => {
-    addToRecentlyPlayed(game);
-    window.location.href = game.page;
-  });
-
-
+  card.addEventListener("click", () => addToRecentlyPlayed(game));
   return card;
 }
 
 // ================= SEARCH FILTER =================
 function filterGames(query) {
   query = query.trim().toLowerCase();
-  document.querySelectorAll(".game-card").forEach(card => {
+  document.querySelectorAll("#games .game-card").forEach(card => {
     const title = card.querySelector("h4").textContent.toLowerCase();
-    // Show cards that include the search query anywhere in the title
-    card.style.display = (query === "" || title.includes(query)) ? "block" : "none";
+    card.style.display = (query === "" || title.includes(query)) ? "" : "none";
   });
 }
 
 // ================= TOGGLE SEARCH (Mobile) =================
 function toggleSearch() {
-  document.querySelector(".search-bar").classList.toggle("active");
+  const searchBar = document.querySelector(".search-bar");
+  if (searchBar) searchBar.classList.toggle("active");
 }
 
-// Testing
 // ================= RECENTLY PLAYED =================
 function addToRecentlyPlayed(game) {
   const key = "recentlyPlayedGames";
-  let stored = JSON.parse(localStorage.getItem(key)) || [];
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key)) || [];
+  } catch (e) {
+    stored = [];
+  }
 
-  // Remove if already exists
-  stored = stored.filter(g => g.page !== game.page);
+  stored = stored.filter(pagePath => pagePath !== game.page);
+  stored.unshift(game.page);
 
-  // Add to beginning
-  stored.unshift(game);
-
-  // Keep only last 5
   if (stored.length > 5) stored = stored.slice(0, 5);
 
-  localStorage.setItem(key, JSON.stringify(stored));
+  try {
+    localStorage.setItem(key, JSON.stringify(stored));
+  } catch (e) {}
 }
 
 function renderRecentlyPlayed() {
   const key = "recentlyPlayedGames";
   const section = document.getElementById("recently-played");
-  const container = document.getElementById("recent-container"); // ✅ target only recently played
-  const stored = JSON.parse(localStorage.getItem(key));
+  const container = document.getElementById("recent-container");
+  
+  if (!section || !container) return;
 
-  // Hide section if no data or first-time user
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key)) || [];
+  } catch (e) {
+    stored = [];
+  }
+
   if (!stored || stored.length === 0) {
     section.style.display = "none";
     return;
   }
 
-  section.style.display = "block";
+  const allGames = window.allGamesData || [];
+  section.style.display = "";
   container.innerHTML = "";
-
-  stored.forEach(game => {
-    const card = document.createElement("div");
-    card.className = "game-card";
-    card.innerHTML = `
-      <img src="${game.thumbnail}" alt="${game.title}" loading="lazy">
-      <h4>${game.title}</h4>
-    `;
-    card.addEventListener("click", () => {
-      addToRecentlyPlayed(game);
-      window.location.href = game.page;
-    });
-    container.appendChild(card);
+  
+  let validGamesCount = 0;
+  stored.forEach(pagePath => {
+    const gameObj = allGames.find(g => g.page === pagePath);
+    if (gameObj) {
+      container.appendChild(createGameCard(gameObj));
+      validGamesCount++;
+    }
   });
+  
+  if (validGamesCount === 0) {
+    section.style.display = "none";
+  }
 }
